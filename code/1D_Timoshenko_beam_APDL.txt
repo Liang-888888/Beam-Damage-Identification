@@ -1,0 +1,61 @@
+FINISH
+/CLEAR
+/FILNAME, Cantilever_Beam_Modal
+
+/PREP7
+
+ET,1,BEAM188
+KEYOPT,1,3,3      ! Timoshenko beam (考虑剪切变形)
+KEYOPT,1,9,0      ! consistent mass
+
+MP,EX,1,2.0e11     ! 弹性模量 200 GPa = 2.0e11 Pa
+MP,PRXY,1,0.3     ! 泊松比
+MP,DENS,1,7850    ! 密度 7850 kg/m^3
+
+SECTYPE,1,BEAM,RECT  ! 矩形截面
+SECDATA,0.5,0.5      ! 宽度=0.5m, 高度=0.5m
+
+! 创建两个关键点
+K,1,0,0,0            ! 固定端 (坐标原点)
+K,2,5,0,0            ! 自由端 (X方向5m)
+
+L,1,2                ! 连接关键点1和2
+
+! 指定线划分的单元数
+LESIZE,ALL,,,30      ! 将线划分为30个单元
+LMESH,1              ! 划分线1
+
+D,ALL,UZ,0       ! 约束Z方向位移
+D,ALL,UX,0       ! **关键：约束轴向位移** (这样就没有轴向模态了)
+D,ALL,ROTX,0     ! 约束绕X轴转动
+D,ALL,ROTY,0     ! 约束绕Y轴转动
+
+! 固定端约束 (关键点1处全部固定)
+DK,1,ALL,0           ! UX,UY,UZ,ROTX,ROTY,ROTZ全部约束
+
+! ====== 注意：模态分析不需要施加载荷 ======
+
+SAVE
+FINISH
+
+! ============ 模态分析求解设置 ============
+/SOLU
+ANTYPE,2            ! 模态分析
+! 或写 ANTYPE,MODAL
+
+! 设置模态提取选项
+MODOPT,LANB,10      ! 提取前10阶模态
+MXPAND,10,,,1       ! 扩展所有模态，计算单元结果
+LUMPM,0             ! 一致质量矩阵
+PSTRES,0            ! 不考虑预应力
+
+! ====== 最重要的：必须执行SOLVE！ ======
+SOLVE               ! 执行模态分析求解
+FINISH
+
+! ============ 模态分析后处理 ============
+/POST1
+
+SET,LIST            ! 列出所有模态的频率
+
+FINISH
