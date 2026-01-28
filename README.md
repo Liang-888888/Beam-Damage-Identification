@@ -1,5 +1,5 @@
 # **A Research Exploration: From Physical Modeling to AI for Beam Damage Identification**
-#### **Author**: Jiaye Liang (Undergraduate)
+#### **Author**: Jiaye Liang
 #### **Project Status**: An open-ended research project.
 #### **Primary Goal**: To document my learning process and invite discussion on a challenging inverse problem.
 #### **Email**: 2208341591@qq.com
@@ -61,6 +61,7 @@ I see this project as a starting point, not a conclusion. The framework I’ve b
 ## **Repository Structure**
 ```
 /README/
+/Two_page_Summary/
 /1D_Timoshenko_beam_FEM/
 /1D_Timoshenko_beam_APDL/
 /1D_Timoshenko_beam_KLexpansion/
