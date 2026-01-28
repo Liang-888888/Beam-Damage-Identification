@@ -26,22 +26,18 @@ LESIZE,ALL,,,30      ! 将线划分为30个单元
 LMESH,1              ! 划分线1
 
 D,ALL,UZ,0       ! 约束Z方向位移
-D,ALL,UX,0       ! **关键：约束轴向位移** (这样就没有轴向模态了)
+D,ALL,UX,0       ! 关键：约束轴向位移 (这样就没有轴向模态了)
 D,ALL,ROTX,0     ! 约束绕X轴转动
 D,ALL,ROTY,0     ! 约束绕Y轴转动
 
 ! 固定端约束 (关键点1处全部固定)
 DK,1,ALL,0           ! UX,UY,UZ,ROTX,ROTY,ROTZ全部约束
 
-! ====== 注意：模态分析不需要施加载荷 ======
-
 SAVE
 FINISH
 
-! ============ 模态分析求解设置 ============
 /SOLU
 ANTYPE,2            ! 模态分析
-! 或写 ANTYPE,MODAL
 
 ! 设置模态提取选项
 MODOPT,LANB,10      ! 提取前10阶模态
@@ -49,13 +45,9 @@ MXPAND,10,,,1       ! 扩展所有模态，计算单元结果
 LUMPM,0             ! 一致质量矩阵
 PSTRES,0            ! 不考虑预应力
 
-! ====== 最重要的：必须执行SOLVE！ ======
-SOLVE               ! 执行模态分析求解
+SOLVE               
 FINISH
 
-! ============ 模态分析后处理 ============
 /POST1
-
-SET,LIST            ! 列出所有模态的频率
-
+SET,LIST            
 FINISH
